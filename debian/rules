@@ -4,10 +4,10 @@
 	dh $@
 
 override_dh_auto_configure:
-	cmake -B build -DCMAKE_BUILD_TYPE=Release
+	mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ..
 
 override_dh_auto_build:
-	cmake --build build --config Release
+	cd build && cmake --build .
 
 override_dh_auto_install:
-	cmake --install build --prefix debian/factory-pattern/usr/local
+	cd build && DESTDIR=$(CURDIR)/debian/factorypattern cmake --install .
