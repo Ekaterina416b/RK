@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4  # Обновлено с v2 до v4
 
     - name: Install dependencies
       run: |
@@ -37,14 +37,14 @@ jobs:
         mv ../*.deb artifacts/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4  # Обновлено с v2 до v4
       with:
         name: deb-packages
         path: artifacts/*.deb
 
     - name: Create Release
       if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2  # Обновлено с v1 до v2
       with:
         files: artifacts/*.deb
         body: "Automatically built DEB package"
