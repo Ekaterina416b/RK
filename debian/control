@@ -1,12 +1,12 @@
 Source: factorypattern
 Section: devel
 Priority: optional
-Maintainer: Your Name <karpina.katia@maii.ru>
-Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential
+Maintainer: Your Name <your.email@example.com>
+Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential, libgtest-dev
 Standards-Version: 4.6.2
 
 Package: factorypattern
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Factory Pattern implementation in C++
- Example implementation of Factory design pattern with tests and packaging.
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtest-dev
+Description: Factory Pattern implementation
+ Example implementation of Factory design pattern.
