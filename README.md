@@ -18,3 +18,9 @@ chmod +x organize_patterns.sh
 6. Добавить этот тест в сборочный файл CMakeLists.txt, чтобы тест также собирался.
 7. Написать скрипт github action, чтобы весь код и тесты собирались удаленно на github. Также собранные файлы нужно в пакет исполняемых файлов deb на ubuntu-latest.
 8. Собранный пакет прикрепить в виде Release к проекту.
+
+rm -rf build
+mkdir build
+cd build
+cmake ..
+make
