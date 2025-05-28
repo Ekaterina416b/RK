@@ -9,12 +9,9 @@ include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG main  # Используем main вместо конкретной версии
+  GIT_TAG v1.13.0  # Используем проверенную версию
 )
 FetchContent_MakeAvailable(googletest)
-
-# Включаем модуль GoogleTest
-include(GoogleTest)
 
 # Основная библиотека
 add_library(FactoryPattern STATIC
