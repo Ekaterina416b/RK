@@ -42,7 +42,6 @@ jobs:
     - name: Prepare debian directory
       run: |
         mkdir -p debian
-        # Создаем минимальные необходимые файлы
         if [ ! -f "debian/control" ]; then
           cat > debian/control <<EOF
 Source: factorypattern
@@ -78,14 +77,9 @@ EOF
 
     - name: Build DEB package
       run: |
-        # Удаляем потенциально проблемные файлы
         rm -rf debian/factorypattern/usr/local/include/gtest
         rm -rf debian/factorypattern/usr/local/lib/libgtest*
-        
-        # Сборка пакета
         dpkg-buildpackage -us -uc
-        
-        # Создаем папку для артефактов
         mkdir -p artifacts
         mv ../*.deb artifacts/
 
