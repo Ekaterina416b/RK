@@ -1,22 +1,22 @@
-cmake_minimum_required(VERSION 3.14)  # Повышенная минимальная версия
+cmake_minimum_required(VERSION 3.14)
 project(FactoryPattern)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Включение Google Test через FetchContent
+# Надежный способ подключения GTest
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG release-1.11.0  # Обновленная версия
+  GIT_TAG main  # Используем main вместо конкретной версии
 )
 FetchContent_MakeAvailable(googletest)
 
-# Включаем модуль GoogleTest после загрузки
+# Включаем модуль GoogleTest
 include(GoogleTest)
 
-# Main library
+# Основная библиотека
 add_library(FactoryPattern STATIC
     src/ConceptualExample/ConceptualExample.cpp
     src/Documents/Documents.cpp
@@ -29,10 +29,10 @@ target_include_directories(FactoryPattern PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-# Main executable
+# Основной исполняемый файл
 add_executable(factory_pattern src/main.cpp)
 target_link_libraries(factory_pattern FactoryPattern)
 
-# Tests
+# Тесты
 enable_testing()
 add_subdirectory(tests)
