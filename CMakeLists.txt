@@ -1,17 +1,20 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)  # Повышенная минимальная версия
 project(FactoryPattern)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Включение автоматической загрузки GTest
+# Включение Google Test через FetchContent
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG release-1.12.1
+  GIT_TAG release-1.14.0  # Обновленная версия
 )
 FetchContent_MakeAvailable(googletest)
+
+# Включаем модуль GoogleTest после загрузки
+include(GoogleTest)
 
 # Main library
 add_library(FactoryPattern STATIC
