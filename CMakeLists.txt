@@ -4,6 +4,15 @@ project(FactoryPattern)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Включение автоматической загрузки GTest
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+FetchContent_MakeAvailable(googletest)
+
 # Main library
 add_library(FactoryPattern STATIC
     src/ConceptualExample/ConceptualExample.cpp
