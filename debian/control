@@ -1,0 +1,13 @@
+Source: factory-pattern
+Section: devel
+Priority: optional
+Maintainer: Your Name <your.email@example.com>
+Build-Depends: cmake, debhelper (>= 9), g++, build-essential
+Standards-Version: 4.5.0
+Homepage: https://github.com/yourusername/factory-pattern
+
+Package: factory-pattern
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Factory Pattern implementation examples
+ This package contains examples of Factory design pattern implementation.

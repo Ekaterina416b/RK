@@ -1,0 +1,50 @@
+name: Build and Package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake g++ build-essential debhelper devscripts
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Run tests
+      working-directory: ./build
+      run: ctest --output-on-failure
+
+    - name: Create DEB package
+      run: |
+        mkdir -p debian
+        cp -r debian/* .
+        dpkg-buildpackage -us -uc
+        mkdir artifacts
+        mv ../*.deb artifacts/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: deb-packages
+        path: artifacts/*.deb
+
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: artifacts/*.deb
+        body: "Automatically built DEB package"
