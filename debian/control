@@ -2,7 +2,7 @@ Source: factorypattern
 Section: devel
 Priority: optional
 Maintainer: Your Name <karpina.katia@mail.ru>
-Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential, libgtest-dev
+Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential, libgtest-dev, dh-cmake
 Standards-Version: 4.6.2
 
 Package: factorypattern
