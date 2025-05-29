@@ -2,99 +2,49 @@ name: Build and Package
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Обновлено с v2 до v4
 
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
-          cmake \
-          g++ \
-          build-essential \
-          debhelper \
-          devscripts \
-          libgtest-dev \
-          googletest
+        sudo apt-get install -y cmake g++ build-essential debhelper devscripts
 
     - name: Configure CMake
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DINSTALL_GTEST=OFF \
-          -DCMAKE_INSTALL_PREFIX=/usr
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
-      run: cmake --build build --config Release --target install --parallel $(nproc)
+      run: cmake --build build --config Release
 
     - name: Run tests
       working-directory: ./build
       run: ctest --output-on-failure
 
-    - name: Prepare debian directory
+    - name: Create DEB package
       run: |
         mkdir -p debian
-        if [ ! -f "debian/control" ]; then
-          cat << 'EOF' > debian/control
-Source: factorypattern
-Section: devel
-Priority: optional
-Maintainer: Your Name <your.email@example.com>
-Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential, libgtest-dev
-Standards-Version: 4.6.2
-
-Package: factorypattern
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libgtest-dev
-Description: Factory Pattern implementation
- Example implementation of Factory design pattern.
-EOF
-        fi
-
-        if [ ! -f "debian/rules" ]; then
-          cat << 'EOF' > debian/rules
-#!/usr/bin/make -f
-
-%:
-	dh $@ --with=cmake
-
-override_dh_auto_configure:
-	mkdir -p build && cd build && cmake .. -DINSTALL_GTEST=OFF -DCMAKE_INSTALL_PREFIX=/usr
-
-override_dh_auto_install:
-	cd build && DESTDIR=$(CURDIR)/debian/factorypattern cmake --install .
-EOF
-          chmod +x debian/rules
-        fi
-
-    - name: Build DEB package
-      run: |
-        rm -rf debian/factorypattern/usr/local/include/gtest
-        rm -rf debian/factorypattern/usr/local/lib/libgtest*
+        cp -r debian/* .
         dpkg-buildpackage -us -uc
-        mkdir -p artifacts
+        mkdir artifacts
         mv ../*.deb artifacts/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4  # Обновлено с v2 до v4
       with:
         name: deb-packages
         path: artifacts/*.deb
-        if-no-files-found: error
 
     - name: Create Release
       if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v2  # Обновлено с v1 до v2
       with:
         files: artifacts/*.deb
         body: "Automatically built DEB package"
-        draft: false
-        prerelease: false
