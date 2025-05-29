@@ -2,8 +2,9 @@ name: Build and Package
 
 on:
   push:
-    tags:
-      - 'v*'  # Запускать workflow только при push тегов, начинающихся с "v"
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -11,13 +12,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Обязательно для получения тегов
 
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake g++ libgtest-dev
+        sudo apt-get install -y cmake g++ libgtest-dev  # Removed debhelper, devscripts, dh-cmake
 
     - name: Create build directory
       run: mkdir build
@@ -41,23 +40,16 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: deb-packages
-        path: build/*.deb
-
-    - name: Extract tag name
-      id: extract_tag
-      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-      env:
-        GITHUB_REF: ${{ github.ref }}
+        path: build/*.deb  # Updated path to DEB file
 
     - name: Create Release
-      if: github.ref_type == 'tag'  #Подстраховка, чтобы запустить только при теге
-      uses: softprops/action-gh-release@v2
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ env.TAG_NAME }}
-        files: build/*.deb
-        body: "Automatically built DEB package"
-        name: Release ${{ env.TAG_NAME }}  #Имя релиза
+        tag_name: v${{ env.Version }}
+        name: Release v${{ env.Version }}
+        body: "Automated release with built library and source code."
+        files: |
+          _build/_artifacts/*
         draft: false
         prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
