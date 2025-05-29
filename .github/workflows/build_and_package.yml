@@ -43,7 +43,7 @@ jobs:
       run: |
         mkdir -p debian
         if [ ! -f "debian/control" ]; then
-          cat > debian/control <<EOF
+          cat << 'EOF' > debian/control
 Source: factorypattern
 Section: devel
 Priority: optional
@@ -53,24 +53,24 @@ Standards-Version: 4.6.2
 
 Package: factorypattern
 Architecture: any
-Depends: \${shlibs:Depends}, \${misc:Depends}, libgtest-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtest-dev
 Description: Factory Pattern implementation
  Example implementation of Factory design pattern.
 EOF
         fi
 
         if [ ! -f "debian/rules" ]; then
-          cat > debian/rules <<EOF
+          cat << 'EOF' > debian/rules
 #!/usr/bin/make -f
 
 %:
-	dh \$@ --with=cmake
+	dh $@ --with=cmake
 
 override_dh_auto_configure:
 	mkdir -p build && cd build && cmake .. -DINSTALL_GTEST=OFF -DCMAKE_INSTALL_PREFIX=/usr
 
 override_dh_auto_install:
-	cd build && DESTDIR=\$(CURDIR)/debian/factorypattern cmake --install .
+	cd build && DESTDIR=$(CURDIR)/debian/factorypattern cmake --install .
 EOF
           chmod +x debian/rules
         fi
