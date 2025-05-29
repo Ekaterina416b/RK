@@ -11,14 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  # Обновлено с v2 до v4
+    - uses: actions/checkout@v4
 
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake g++ build-essential debhelper devscripts libgtest-dev dh-cmake
+        sudo apt-get install -y cmake g++ libgtest-dev  # Removed debhelper, devscripts, dh-cmake
+
+    - name: Create build directory
+      run: mkdir build
+
     - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
       run: cmake --build build --config Release
@@ -29,22 +33,18 @@ jobs:
 
     - name: Create DEB package
       run: |
-        echo "13" > debian/compat
-        mkdir -p debian
-        cp -r debian/* .
-        dpkg-buildpackage -us -uc
-        mkdir artifacts
-        mv ../*.deb artifacts/
+        cd build
+        make package  # Use make package to create the DEB
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4  # Обновлено с v2 до v4
+      uses: actions/upload-artifact@v4
       with:
         name: deb-packages
-        path: artifacts/*.deb
+        path: build/*.deb  # Updated path to DEB file
 
     - name: Create Release
       if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v2  # Обновлено с v1 до v2
+      uses: softprops/action-gh-release@v2
       with:
-        files: artifacts/*.deb
+        files: build/*.deb  # Updated path to DEB file
         body: "Automatically built DEB package"
