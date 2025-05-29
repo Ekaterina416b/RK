@@ -1,7 +1,7 @@
 Source: factorypattern
 Section: devel
 Priority: optional
-Maintainer: Your Name <your.email@example.com>
+Maintainer: Your Name <karpina.katia@mail.ru>
 Build-Depends: cmake, debhelper-compat (= 13), g++, build-essential, libgtest-dev
 Standards-Version: 4.6.2
 
