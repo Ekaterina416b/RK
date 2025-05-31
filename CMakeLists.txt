@@ -35,26 +35,26 @@ enable_testing()
 add_subdirectory(tests)
 
 # CPack Configuration
-include(InstallRequiredSystemLibraries) # Include required system libraries
+include(InstallRequiredSystemLibraries)
 
-set(CPACK_PACKAGE_NAME "FactoryPattern") # Package name
-set(CPACK_PACKAGE_VENDOR "MyVendor") # Vendor
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Factory Pattern Example") # Short description
-set(CPACK_PACKAGE_VERSION "1.0.0") # Replace with your versioning scheme
+set(CPACK_PACKAGE_NAME "factorypattern")
+set(CPACK_PACKAGE_VENDOR "MyVendor")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Factory Pattern Example")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+
+# Обязательные поля для DEB пакета
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Your Name <your.email@example.com>")  # <- ДОБАВЬТЕ ЭТО
+set(CPACK_PACKAGE_CONTACT "Your Name <your.email@example.com>")  # Альтернативный вариант
 
 # Debian-specific settings
-set(CPACK_GENERATORS "DEB") # Use DEB generator
+set(CPACK_GENERATORS "DEB")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libstdc++6")
+set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
 
-# Optional settings - adjust these as needed
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libstdc++6") # Dependencies
-set(CPACK_DEBIAN_PACKAGE_SECTION "devel") # Section
-
-# Set installation directories
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64") # Target architecture
-
+# Установка файлов
 install(TARGETS factory_pattern RUNTIME DESTINATION bin)
 install(TARGETS FactoryPattern LIBRARY DESTINATION lib)
-install(DIRECTORY src/ DESTINATION include/FactoryPattern FILES_MATCHING PATTERN "*.h") # Install headers
+install(DIRECTORY src/ DESTINATION include/FactoryPattern FILES_MATCHING PATTERN "*.h")
 
-
-include(CPack) # Include CPack
+include(CPack)
