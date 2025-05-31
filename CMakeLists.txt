@@ -4,12 +4,12 @@ project(FactoryPattern)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Надежный способ подключения GTest
+# подключение GTest
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG v1.13.0  # Используем проверенную версию
+  GIT_TAG v1.13.0
 )
 FetchContent_MakeAvailable(googletest)
 
@@ -42,9 +42,8 @@ set(CPACK_PACKAGE_VENDOR "MyVendor")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Factory Pattern Example")
 set(CPACK_PACKAGE_VERSION "1.0.0")
 
-# Обязательные поля для DEB пакета
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Your Name <your.email@example.com>")  # <- ДОБАВЬТЕ ЭТО
-set(CPACK_PACKAGE_CONTACT "Your Name <your.email@example.com>")  # Альтернативный вариант
+# поля для DEB пакета
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ekaterina <karpina.katia@mail.ru")
 
 # Debian-specific settings
 set(CPACK_GENERATORS "DEB")
